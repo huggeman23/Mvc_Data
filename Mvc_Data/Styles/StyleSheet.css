@@ -1,0 +1,17 @@
+﻿body {
+    width: 200px;
+    height: 200px;
+    background-color:aqua;
+}
+#peapoleTable {
+    display: grid;
+    grid-template-columns: auto auto auto auto ;
+}
+p{
+    color: blue;
+}
+#test{
+    background-color:forestgreen;
+    width:200px;
+    height:200px;
+}

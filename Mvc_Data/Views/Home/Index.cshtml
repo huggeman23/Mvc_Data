@@ -1,0 +1,47 @@
+﻿@using Mvc_Data.Models
+@model IEnumerable<Person>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>Index</h1>
+
+<p>sertch for peron name</p> 
+
+@using (Html.BeginForm("Serch", "Home", FormMethod.Post))
+{
+
+    <input type="text" name="sertch" value="@ViewBag.Phrase">
+    
+    
+      <input type="submit" value="sertch">
+}
+@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+{
+
+
+    <input type="text" name="Name" placeholder="Name">
+    <input type="text" name="City" placeholder="City">
+    <input type="text" name="Phone" placeholder="Phone">
+    
+    
+      <input type="submit" value="submit">
+}
+@{
+    int i = 0;
+}
+<div class="peapoleTable">
+@foreach (var v in Model)
+{
+    @if (ViewBag.Phrase ==null || v.Name.Contains(ViewBag.Phrase)) {
+        <p>@v.Name</p> 
+        <p>@v.City</p> 
+        <p>@v.Phone</p>
+        <p>@Html.ActionLink("Delete","Delete","Home", new {Id=i})</p>
+    }
+    
+        i++;
+    
+} 
+</div>
+
