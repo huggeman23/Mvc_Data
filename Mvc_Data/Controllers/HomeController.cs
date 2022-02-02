@@ -8,6 +8,7 @@ namespace Mvc_Data.Controllers
     public class HomeController : Controller
     {
         static List<Person> collect = new List<Person>();
+        
         static PeopoleViewModel peapole;
               
         public IActionResult Index()
@@ -15,7 +16,8 @@ namespace Mvc_Data.Controllers
             /*Person person = new Person("hugo",3467,"marsta");
             collect.Add(person);
             Person perso = new Person("hu", 3467, "marsta");
-            collect.Add(perso);*/
+            peapole = new PeopoleViewModel("");
+            pe.Add(perso);*/
             if (peapole != null)
             {
                 ViewBag.Phrase = peapole.sertchPhrase;

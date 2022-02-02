@@ -1,0 +1,10 @@
+﻿
+@using Mvc_Data.Models
+@model Person
+
+<div class="row"> 
+	    <p class="col-sm-4">@Model.Name</p> 
+        <p class="col-sm-4">@Model.City</p> 
+        <p class="col-sm-4">@Model.Phone</p>
+        <p class="col-sm-4">@Html.ActionLink("Delete","Delete","Home",new{Id=@ViewData["i"]})</p>
+</div>       

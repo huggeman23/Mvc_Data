@@ -5,12 +5,14 @@ namespace Mvc_Data.Models
 {
     public class CreatePersonViewModel
     {
-        [Required(ErrorMessage = "A feald is missing input")]
+        [Required]
         public string Name { get; set; }
-        [Required(ErrorMessage ="A feald is missing input")]
+
+        [Required]
         public string City { get; set; }
-        [Required(ErrorMessage = "A feald is missing input")]
-        [RegularExpression(@"^\$?\d+(\.(\d{}))?$")]
+
+        [Required]
+        [RegularExpression(@"^\$?\d+(\.(\d{2}))?$")]
         public int Phone { get; set; }
         
         
