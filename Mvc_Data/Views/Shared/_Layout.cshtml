@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     
@@ -33,5 +34,38 @@ p{
         
         @RenderBody()
     </div>
+    <script>
+
+function getPartial() {
+
+$.get("Home/Partial", function(data) {
+    document.getElementById("pep").innerHTML =data;
+    
+}); 
+}
+
+ $(".det").click(function() {
+     var s =$("#details").val();
+     var action = $(this).val();
+
+     console.log(action);
+
+        $.post("Home/"+action+"", {stuff:s},function(result) {
+            
+        document.getElementById("pep").innerHTML =result;
+        
+    
+        }); 
+       });
+ 
+        function postAdd() {
+     
+        $.post("Home/addPeapole", {Name: $("input[name='Name']").val(), City: $("input[name='City']").val(), Phone: $("input[name='Phone']").val()},function(result) {
+            
+        document.getElementById("pep").innerHTML =result;
+          
+        }); 
+       }
+    </script>
 </body>
 </html>

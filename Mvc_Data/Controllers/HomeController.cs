@@ -9,23 +9,15 @@ namespace Mvc_Data.Controllers
     {
         static List<Person> collect = new List<Person>();
         
-        static PeopoleViewModel peapole;
+        //static PeopoleViewModel peapole;
               
         public IActionResult Index()
         {
-            /*Person person = new Person("hugo",3467,"marsta");
-            collect.Add(person);
-            Person perso = new Person("hu", 3467, "marsta");
-            peapole = new PeopoleViewModel("");
-            pe.Add(perso);*/
-            if (peapole != null)
-            {
-                ViewBag.Phrase = peapole.sertchPhrase;
-            }
+           
             return View(collect);
         }
         [HttpPost]
-        public IActionResult Index(CreatePersonViewModel createPersonView)
+        public IActionResult addPeapole(CreatePersonViewModel createPersonView)
         {
             if (ModelState.IsValid)
             {
@@ -37,19 +29,16 @@ namespace Mvc_Data.Controllers
                 
                     ViewBag.Phrase = null;
                 
-                return View(collect);
+                return PartialView("Pview",collect);
             }
             else {
-                if (peapole != null)
-                {
-                    ViewBag.Phrase = peapole.sertchPhrase;
-                }
-
-
-                return View(collect);
+                
+                    ViewBag.Phrase = "-1";
+                
+                return PartialView("Pview", collect);
             }
         }
-        [HttpPost]
+       /* [HttpPost]
         public IActionResult Serch(string sertch) {
             peapole = new PeopoleViewModel(sertch);
             
@@ -60,6 +49,29 @@ namespace Mvc_Data.Controllers
             collect.RemoveAt(Id);
 
             return RedirectToAction("Index");
+        }*/
+        [HttpGet]
+        public IActionResult Partial()
+        {
+            return PartialView("Pview",collect);
+        }
+        [HttpPost]
+        public IActionResult Details(string stuff)
+        {
+            ViewBag.Phrase = stuff;
+            return PartialView("Pview", collect);
+        }
+        [HttpPost]
+        public IActionResult DeletJ(string stuff)
+        {
+            int.TryParse(stuff, out int id);
+
+            ViewBag.deletMessage = collect[id].Name+"was deleted";
+            collect.RemoveAt(id);
+
+            ViewBag.Phrase = "-1";
+
+            return PartialView("Pview", collect);
         }
     }
 }

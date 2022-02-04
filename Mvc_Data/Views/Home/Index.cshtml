@@ -3,20 +3,26 @@
 
 @{
     ViewData["Title"] = "Index";
-    int i = 0;
+    
 }
 <h1>Index</h1>
 
-<p>sertch for persons name</p> 
-<p>@Html.ValidationSummary()</p>
-@using (Html.BeginForm("Serch", "Home", FormMethod.Post))
+<p>whrite Id(position) of the person you whant to know more about or delete</p> 
+
+<!--using (Html.BeginForm("Serch", "Home", FormMethod.Post))
 {
 
-    <input type="text" name="sertch" value="@ViewBag.Phrase">
+    <input type="text" name="sertch" value="ViewBag.Phrase">
         
       <input type="submit" value="sertch">
-}
-@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+}//-->
+
+    <input type="text" name="" id="details">
+        
+      <button class="det" value="Details">Details</button>
+      <button class="det" value="DeletJ">Delete</button>
+
+@using (Html.BeginForm())
 {
 
 
@@ -24,20 +30,12 @@
     <input type="text" name="City" placeholder="City">
     <input type="text" name="Phone" placeholder="Phone">
         
-      <input type="submit" value="Add">
+      <input type="button" value="Add" onclick="postAdd()">
 }
-<div class="peapoleTable">
-@foreach (Person v in Model)
-{
-    @if (ViewBag.Phrase ==null || v.Name.Contains(ViewBag.Phrase)) {
-        ViewData["i"] = i;
-               
-        <partial name="Pview" model="v" view-data="ViewData" />
-        
-    }
+<button onclick="getPartial()">Peapole</button>
+<div class="peapoleTable" id="pep">
     
-        i++;
     
-} 
+ 
 </div>
 
