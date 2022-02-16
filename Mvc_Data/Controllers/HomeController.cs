@@ -3,39 +3,45 @@ using Mvc_Data.Models;
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace Mvc_Data.Controllers
 {
     public class HomeController : Controller
     {
-        static List<Person> collect = new List<Person>();
         
+        public readonly dbContext _context;
+        public HomeController(dbContext context) { _context = context; }
         //static PeopoleViewModel peapole;
               
         public IActionResult Index()
         {
-           
-            return View(collect);
+            
+            
+                /*var per = new CreatePersonViewModel() { City = "lol", Name = "sl", Phone = 222 };
+                _context.PersonViewModels.Add(per);
+                _context.SaveChanges();*/
+                
+                            
+            return View(_context.PersonViewModels.ToList());
         }
         [HttpPost]
         public IActionResult addPeapole(CreatePersonViewModel createPersonView)
         {
+            
+
             if (ModelState.IsValid)
             {
                 
-                Person person = new Person(createPersonView.Name, createPersonView.Phone, createPersonView.City);
+                var per = new CreatePersonViewModel() { City = createPersonView.City, Name = createPersonView.Name, Phone = createPersonView.Phone };
+                _context.PersonViewModels.Add(per);
+                _context.SaveChanges();
 
-                collect.Add(person);
-
-                
-                    ViewBag.Phrase = null;
-                
-                return PartialView("Pview",collect);
+                return PartialView("Pview",  _context.PersonViewModels.ToList());
             }
             else {
+                                
                 
-                    ViewBag.Phrase = "-1";
-                
-                return PartialView("Pview", collect);
+                return PartialView("Pview", _context.PersonViewModels.ToList());
             }
         }
        /* [HttpPost]
@@ -50,28 +56,35 @@ namespace Mvc_Data.Controllers
 
             return RedirectToAction("Index");
         }*/
-        [HttpGet]
+                [HttpGet]
         public IActionResult Partial()
         {
-            return PartialView("Pview",collect);
+            
+            return PartialView("Pview",_context.PersonViewModels.ToList());
         }
         [HttpPost]
         public IActionResult Details(string stuff)
         {
-            ViewBag.Phrase = stuff;
-            return PartialView("Pview", collect);
+            int.TryParse(stuff, out int stu);
+            
+            var result = from s in _context.PersonViewModels.ToList()
+                         where s.Id == stu
+                         select s;
+                                 
+            return PartialView("Pview", result.ToList());
         }
         [HttpPost]
         public IActionResult DeletJ(string stuff)
         {
-            int.TryParse(stuff, out int id);
+            
 
-            ViewBag.deletMessage = collect[id].Name+"was deleted";
-            collect.RemoveAt(id);
+            int.TryParse(stuff, out int stu);
+            
 
-            ViewBag.Phrase = "-1";
+            _context.PersonViewModels.Remove(_context.PersonViewModels.Find(stu));
+            _context.SaveChanges();
 
-            return PartialView("Pview", collect);
+            return PartialView("Pview", _context.PersonViewModels.ToList());
         }
     }
 }

@@ -1,24 +1,21 @@
 ﻿
 @using Mvc_Data.Models
-@model IEnumerable<Person>
+@model IEnumerable<CreatePersonViewModel>
 @{
-    int i = 0;
     int.TryParse(ViewBag.Phrase, out int j);
 }
 <p>@Html.ValidationSummary()</p>
 <p>@ViewBag.deletMessage</p>
 
-@foreach (Person v in Model)
+@foreach (var v in Model)
 {
-    @if (ViewBag.Phrase ==null || i==j) {
+    
         <div class="row"> 
 	    <p class="col-sm-4">@v.Name</p> 
         <p class="col-sm-4">@v.City</p> 
         <p class="col-sm-4">@v.Phone</p>
-        <p class="col-sm-4">iD: @i</p>
+        <p class="col-sm-4">iD: @v.Id</p>
 </div> 
-                       
-    }
-    i++;   
+                         
 }
       
