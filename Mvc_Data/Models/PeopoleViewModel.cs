@@ -4,7 +4,7 @@ namespace Mvc_Data.Models
 {
     public class PeopoleViewModel
     {
-        public List<Person> PersonalStuff { get; set; }
+        public List<CreatePersonViewModel> PersonalStuff { get; set; }
 
         public string sertchPhrase { get; set; }    
 

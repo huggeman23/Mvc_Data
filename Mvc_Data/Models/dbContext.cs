@@ -12,13 +12,19 @@ namespace Mvc_Data
             //Database.SetInitializer(new dbInitialiser());
              
         }
- 
-        public DbSet<CreatePersonViewModel> PersonViewModels { get; set; }
+        
+        public DbSet<Countery> countery { get; set; }
+        public DbSet<City> city { get; set; } 
+        public DbSet<Person> peapole { get; set; }
+        
+        
 
-         protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Countery>().HasData(new Countery() { CounteryName = "USA" });
+            modelBuilder.Entity<City>().HasData(new City() { CityID = 1, Name = "Montana", CounteryName="USA"});
+            modelBuilder.Entity<Person>().HasData(new Person() { Id=1, CityID = 1, Name = "Mathiew", Phone = 220002298 });
             
-            modelBuilder.Entity<CreatePersonViewModel>().HasData(new CreatePersonViewModel() { Id=1, City = "NewYork", Name = "Mathiew", Phone = 220002298 });
         }
         }
 }

@@ -29,7 +29,9 @@ p{
 }
 </style>
 <body>
-
+    <div>@Html.ActionLink("City","City","City")</div>
+    <div>@Html.ActionLink("Countery","Countery","Countery")</div>
+    <div>@Html.ActionLink("Person","Index","Home")</div>
     <div>
         
         @RenderBody()
@@ -50,7 +52,7 @@ $.get("Home/Partial", function(data) {
 
      console.log(action);
 
-        $.post("Home/"+action+"", {stuff:s},function(result) {
+        $.post(action, {stuff:s},function(result) {
             
         document.getElementById("pep").innerHTML =result;
         
@@ -60,7 +62,7 @@ $.get("Home/Partial", function(data) {
  
         function postAdd() {
      
-        $.post("Home/addPeapole", {Name: $("input[name='Name']").val(), City: $("input[name='City']").val(), Phone: $("input[name='Phone']").val()},function(result) {
+        $.post("Home/addPeapole", {Name: $("input[name='Name']").val(), CityID: $("input[name='CityID']").val(), Phone: $("input[name='Phone']").val()},function(result) {
             
         document.getElementById("pep").innerHTML =result;
           

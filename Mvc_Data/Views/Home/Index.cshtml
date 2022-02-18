@@ -1,5 +1,5 @@
 ﻿@using Mvc_Data.Models
-@model IEnumerable<CreatePersonViewModel>
+@model IEnumerable<Person>
 
 @{
     ViewData["Title"] = "Index";
@@ -19,7 +19,7 @@
 
     <input type="text" name="" id="details">
         
-      <button class="det" value="Details">Details</button>
+      <button class="det" value="Home/Details">Details</button>
       <button class="det" value="DeletJ">Delete</button>
 
 @using (Html.BeginForm())
@@ -27,7 +27,7 @@
 
 
     <input type="text" name="Name" placeholder="Name">
-    <input type="text" name="City" placeholder="City">
+    <input type="number" name="CityID" placeholder="City">
     <input type="text" name="Phone" placeholder="Phone">
         
       <input type="button" value="Add" onclick="postAdd()">

@@ -1,0 +1,42 @@
+﻿@using Mvc_Data.Models
+@model IEnumerable<Countery>
+
+@{
+    ViewData["Title"] = "Countery";
+    
+}
+<h1>Countery</h1>
+<p>@Html.ValidationSummary()</p>
+<p>whrite thr name of the countery you whant to delete</p> 
+
+@using (Html.BeginForm("Delet", "City", FormMethod.Post))
+{
+
+    <input type="text" name="stuff" >
+        
+      <input type="submit" value="delet">
+}
+
+    
+
+@using (Html.BeginForm("addCountery","Countery",FormMethod.Post))
+{
+
+    <input type="text" name="CounteryName" placeholder="CounteryName">
+        
+      <input type="submit" value="Add">
+}
+
+<div class="peapoleTable">
+   @foreach (var v in Model)
+{
+    
+        <div class="row">
+        <p class="col-sm-4">@v.CounteryName</p>         
+</div> 
+                         
+} 
+    
+ 
+</div>
+

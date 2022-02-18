@@ -22,26 +22,26 @@ namespace Mvc_Data.Controllers
                 _context.SaveChanges();*/
                 
                             
-            return View(_context.PersonViewModels.ToList());
+            return View(_context.peapole.ToList());
         }
         [HttpPost]
-        public IActionResult addPeapole(CreatePersonViewModel createPersonView)
+        public IActionResult addPeapole(Person createPersonView)
         {
             
 
             if (ModelState.IsValid)
             {
                 
-                var per = new CreatePersonViewModel() { City = createPersonView.City, Name = createPersonView.Name, Phone = createPersonView.Phone };
-                _context.PersonViewModels.Add(per);
+                
+                _context.peapole.Add(createPersonView);
                 _context.SaveChanges();
 
-                return PartialView("Pview",  _context.PersonViewModels.ToList());
+                return PartialView("Pview",  _context.peapole.ToList());
             }
             else {
                                 
                 
-                return PartialView("Pview", _context.PersonViewModels.ToList());
+                return PartialView("Pview", _context.peapole.ToList());
             }
         }
        /* [HttpPost]
@@ -56,22 +56,28 @@ namespace Mvc_Data.Controllers
 
             return RedirectToAction("Index");
         }*/
-                [HttpGet]
+        [HttpGet]
         public IActionResult Partial()
         {
-            
-            return PartialView("Pview",_context.PersonViewModels.ToList());
+            List<CreatePersonViewModel> viewmod = (from s in _context.peapole.ToList()
+                                                  join t in _context.city.ToList() on s.CityID equals t.CityID
+                                                  join u in _context.countery.ToList() on t.CounteryName equals u.CounteryName
+                                                  select new CreatePersonViewModel { Name = s.Name, CityID = s.CityID, Phone = s.Phone, Id = s.Id, CityName = t.Name, CounteryName = u.CounteryName }).ToList();
+
+            return PartialView("Pview",viewmod);
         }
         [HttpPost]
         public IActionResult Details(string stuff)
         {
             int.TryParse(stuff, out int stu);
             
-            var result = from s in _context.PersonViewModels.ToList()
+            List<CreatePersonViewModel> result= (from s in _context.peapole.ToList()
+                         join t in _context.city.ToList() on s.CityID equals t.CityID
+                         join u in _context.countery.ToList() on t.CounteryName equals u.CounteryName
                          where s.Id == stu
-                         select s;
+                         select new CreatePersonViewModel{Name=s.Name,CityID=s.CityID,Phone=s.Phone,Id=s.Id,CityName=t.Name,CounteryName=u.CounteryName} ).ToList();
                                  
-            return PartialView("Pview", result.ToList());
+            return PartialView("Pview", result);
         }
         [HttpPost]
         public IActionResult DeletJ(string stuff)
@@ -81,10 +87,10 @@ namespace Mvc_Data.Controllers
             int.TryParse(stuff, out int stu);
             
 
-            _context.PersonViewModels.Remove(_context.PersonViewModels.Find(stu));
+            _context.peapole.Remove(_context.peapole.Find(stu));
             _context.SaveChanges();
 
-            return PartialView("Pview", _context.PersonViewModels.ToList());
+            return PartialView("Pview", _context.peapole.ToList());
         }
     }
 }

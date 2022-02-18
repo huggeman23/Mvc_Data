@@ -4,25 +4,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mvc_Data.Models
 {
-    [Table("Persons")]
-    public class Person
+    [Table("City")]
+    public class City
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
-        public int Id { get; set; }
+        public int CityID { get; set; }
         [Required]
         public string Name { get; set; }
-
-        [ForeignKey("CityID")]
-        public City City{ get; set; }
-        public int CityID { get; set; }
-       
-
-        [Required]
-        [RegularExpression(@"^\$?\d+(\.(\d{2}))?$")]
-        public int Phone { get; set; }
         
+        [ForeignKey("CounteryName")]
+        public Countery Countery { get; set; }
+        public string CounteryName { get; set; }
+        
+        public List<Person> peapoleList { get; set; }
         
     }
 }
