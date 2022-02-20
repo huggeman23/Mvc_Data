@@ -11,23 +11,24 @@ namespace Mvc_Data.Controllers
         
         public readonly dbContext _context;
         public HomeController(dbContext context) { _context = context; }
-        //static PeopoleViewModel peapole;
+       
               
         public IActionResult Index()
         {
-            
-            
-                /*var per = new CreatePersonViewModel() { City = "lol", Name = "sl", Phone = 222 };
-                _context.PersonViewModels.Add(per);
-                _context.SaveChanges();*/
-                
-                            
-            return View(_context.peapole.ToList());
+
+
+            /*var per = new CreatePersonViewModel() { City = "lol", Name = "sl", Phone = 222 };
+            _context.PersonViewModels.Add(per);
+            _context.SaveChanges();*/
+            ListViewModel result = new ListViewModel() { peapoleList=_context.peapole.ToList(),languageList=_context.language.ToList()};
+
+
+            return View(result);
         }
         [HttpPost]
         public IActionResult addPeapole(Person createPersonView)
         {
-            
+            ViewBag.Message = "view";
 
             if (ModelState.IsValid)
             {
@@ -35,8 +36,17 @@ namespace Mvc_Data.Controllers
                 
                 _context.peapole.Add(createPersonView);
                 _context.SaveChanges();
+                List<CreatePersonViewModel> viewmod = (from s in _context.peapole.ToList()
+                                                       join t in _context.city.ToList() on s.CityID equals t.CityID
+                                                       join u in _context.countery.ToList() on t.CounteryName equals u.CounteryName
+                                                       join l in _context.personlanguage.ToList() on s.Id equals l.Id into lp
+                                                       from l in lp.DefaultIfEmpty()
+                                                       join a in _context.language.ToList() on l == null ? 0 : l.LanguageID equals a.LanguageID into ap
+                                                       from a in ap.DefaultIfEmpty()
+                                                       select new CreatePersonViewModel { Name = s.Name, CityID = s.CityID, Phone = s.Phone, Id = s.Id, CityName = t.Name, CounteryName = u.CounteryName, LanguageID = l?.LanguageID ?? 0, LanguageName = a?.LanguageName ?? string.Empty }).ToList();
 
-                return PartialView("Pview",  _context.peapole.ToList());
+
+                return PartialView("Pview",  viewmod);
             }
             else {
                                 
@@ -62,7 +72,11 @@ namespace Mvc_Data.Controllers
             List<CreatePersonViewModel> viewmod = (from s in _context.peapole.ToList()
                                                   join t in _context.city.ToList() on s.CityID equals t.CityID
                                                   join u in _context.countery.ToList() on t.CounteryName equals u.CounteryName
-                                                  select new CreatePersonViewModel { Name = s.Name, CityID = s.CityID, Phone = s.Phone, Id = s.Id, CityName = t.Name, CounteryName = u.CounteryName }).ToList();
+                                                   join l in _context.personlanguage.ToList() on s.Id equals l.Id into lp
+                                                   from l in lp.DefaultIfEmpty()
+                                                   join a in _context.language.ToList() on l==null ? 0 : l.LanguageID equals a.LanguageID into ap
+                                                   from a in ap.DefaultIfEmpty()
+                                                   select new CreatePersonViewModel { Name = s.Name, CityID = s.CityID, Phone = s.Phone, Id = s.Id, CityName = t.Name, CounteryName = u.CounteryName, LanguageID=l?.LanguageID ?? 0, LanguageName=a?.LanguageName ?? string.Empty }).ToList();
 
             return PartialView("Pview",viewmod);
         }
@@ -74,9 +88,13 @@ namespace Mvc_Data.Controllers
             List<CreatePersonViewModel> result= (from s in _context.peapole.ToList()
                          join t in _context.city.ToList() on s.CityID equals t.CityID
                          join u in _context.countery.ToList() on t.CounteryName equals u.CounteryName
-                         where s.Id == stu
-                         select new CreatePersonViewModel{Name=s.Name,CityID=s.CityID,Phone=s.Phone,Id=s.Id,CityName=t.Name,CounteryName=u.CounteryName} ).ToList();
-                                 
+                                                 join l in _context.personlanguage.ToList() on s.Id equals l.Id into lp
+                                                 from l in lp.DefaultIfEmpty()
+                                                 join a in _context.language.ToList() on l == null ? 0 : l.LanguageID equals a.LanguageID into ap
+                                                 from a in ap.DefaultIfEmpty()
+                                                 where s.Id == stu
+                                                 select new CreatePersonViewModel { Name = s.Name, CityID = s.CityID, Phone = s.Phone, Id = s.Id, CityName = t.Name, CounteryName = u.CounteryName, LanguageID = l?.LanguageID ?? 0, LanguageName = a?.LanguageName ?? string.Empty }).ToList();
+
             return PartialView("Pview", result);
         }
         [HttpPost]
@@ -91,6 +109,18 @@ namespace Mvc_Data.Controllers
             _context.SaveChanges();
 
             return PartialView("Pview", _context.peapole.ToList());
+        }
+        [HttpPost]
+        public IActionResult GivLanguage(PersonLanguage pl)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                _context.personlanguage.Add(pl);
+            _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
     }
 }

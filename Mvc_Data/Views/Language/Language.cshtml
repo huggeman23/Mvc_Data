@@ -1,0 +1,42 @@
+﻿@using Mvc_Data.Models
+@model IEnumerable<Language>
+
+@{
+    ViewData["Title"] = "Countery";
+    
+}
+<h1>Language</h1>
+<p>@Html.ValidationSummary()</p>
+<p>whrite the id of the language you whant to delete</p> 
+
+@using (Html.BeginForm("Delet", "Language", FormMethod.Post))
+{
+
+    <input type="text" name="stuff" >
+        
+      <input type="submit" value="delet">
+}
+
+    
+
+@using (Html.BeginForm("addLanguage","Language",FormMethod.Post))
+{
+
+    <input type="text" name="LanguageName" placeholder="LanguageName">
+        
+      <input type="submit" value="Add">
+}
+
+<div class="peapoleTable">
+   @foreach (var v in Model)
+{
+    
+        <div class="row">
+        <p class="col-sm-4">@v.LanguageName</p>  
+        <p class="col-sm-4">@v.LanguageID</p> 
+</div> 
+                         
+} 
+    
+ 
+</div>

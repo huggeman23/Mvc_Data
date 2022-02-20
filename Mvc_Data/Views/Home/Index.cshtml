@@ -1,12 +1,12 @@
 ﻿@using Mvc_Data.Models
-@model IEnumerable<Person>
+@model ListViewModel
 
 @{
     ViewData["Title"] = "Index";
     
 }
 <h1>Index</h1>
-
+<h3>@ViewBag.Message</h3>
 <p>whrite Id(position) of the person you whant to know more about or delete</p> 
 
 <!--using (Html.BeginForm("Serch", "Home", FormMethod.Post))
@@ -20,7 +20,7 @@
     <input type="text" name="" id="details">
         
       <button class="det" value="Home/Details">Details</button>
-      <button class="det" value="DeletJ">Delete</button>
+      <button class="det" value="Home/DeletJ">Delete</button>
 
 @using (Html.BeginForm())
 {
@@ -31,6 +31,27 @@
     <input type="text" name="Phone" placeholder="Phone">
         
       <input type="button" value="Add" onclick="postAdd()">
+}
+@using (Html.BeginForm("GivLanguage","Home",FormMethod.Post))
+{
+
+
+    <select name="Id">
+          @foreach (var v in Model.peapoleList)
+{
+    <option value="@v.Id">@v.Name</option>
+                         
+} 
+    </select>
+     <select name="LanguageID">
+          @foreach (var v in Model.languageList)
+{
+    <option value="@v.LanguageID">@v.LanguageName</option>
+                         
+} 
+    </select>
+        
+      <input type="submit" value="giveLanguage">
 }
 <button onclick="getPartial()">Peapole</button>
 <div class="peapoleTable" id="pep">

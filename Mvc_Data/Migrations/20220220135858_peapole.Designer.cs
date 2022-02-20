@@ -9,7 +9,7 @@ using Mvc_Data;
 namespace Mvc_Data.Migrations
 {
     [DbContext(typeof(dbContext))]
-    [Migration("20220217102936_peapole")]
+    [Migration("20220220135858_peapole")]
     partial class peapole
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,7 +65,30 @@ namespace Mvc_Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Mvc_Data.Models.CreatePersonViewModel", b =>
+            modelBuilder.Entity("Mvc_Data.Models.Language", b =>
+                {
+                    b.Property<int>("LanguageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("LanguageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LanguageID");
+
+                    b.ToTable("Language");
+
+                    b.HasData(
+                        new
+                        {
+                            LanguageID = 1,
+                            LanguageName = "Engelska"
+                        });
+                });
+
+            modelBuilder.Entity("Mvc_Data.Models.Person", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -86,7 +109,7 @@ namespace Mvc_Data.Migrations
 
                     b.HasIndex("CityID");
 
-                    b.ToTable("Persons");
+                    b.ToTable("Person");
 
                     b.HasData(
                         new
@@ -98,20 +121,55 @@ namespace Mvc_Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Mvc_Data.Models.PersonLanguage", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LanguageID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id", "LanguageID");
+
+                    b.HasIndex("LanguageID");
+
+                    b.ToTable("PersonLanguage");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            LanguageID = 1
+                        });
+                });
+
             modelBuilder.Entity("Mvc_Data.Models.City", b =>
                 {
                     b.HasOne("Mvc_Data.Models.Countery", "Countery")
                         .WithMany("cityList")
-                        .HasForeignKey("CounteryName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CounteryName");
                 });
 
-            modelBuilder.Entity("Mvc_Data.Models.CreatePersonViewModel", b =>
+            modelBuilder.Entity("Mvc_Data.Models.Person", b =>
                 {
                     b.HasOne("Mvc_Data.Models.City", "City")
                         .WithMany("peapoleList")
                         .HasForeignKey("CityID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Mvc_Data.Models.PersonLanguage", b =>
+                {
+                    b.HasOne("Mvc_Data.Models.Person", "Person")
+                        .WithMany("languageList")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mvc_Data.Models.Language", "Language")
+                        .WithMany("peapoleList")
+                        .HasForeignKey("LanguageID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
