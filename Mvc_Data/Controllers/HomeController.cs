@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Mvc_Data.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,25 @@ namespace Mvc_Data.Controllers
             /*var per = new CreatePersonViewModel() { City = "lol", Name = "sl", Phone = 222 };
             _context.PersonViewModels.Add(per);
             _context.SaveChanges();*/
-            ListViewModel result = new ListViewModel() { peapoleList=_context.peapole.ToList(),languageList=_context.language.ToList()};
+            ListViewModel result = new ListViewModel() { peapoleList=_context.peapole.ToList(),languageList=_context.language.ToList(), cityList = _context.city.ToList()};
 
 
+            return View(result);
+        }
+        public IActionResult UpdatePeapole(int Id)
+        {
+            List<Person> l =( from x in _context.peapole.ToList()
+                    where x.Id == Id
+                    select x).ToList();
+
+            List<Language> lang =( from t in _context.language.ToList()
+                    join x in _context.personlanguage.ToList() on t.LanguageID equals x.LanguageID
+                        where x.Id == Id
+                        select new Language { LanguageID =t.LanguageID, LanguageName = t.LanguageName}).ToList();
+
+            ListViewModel result = new ListViewModel() {peapoleList= l, languageList = lang, cityList = _context.city.ToList() };
+
+           
             return View(result);
         }
         [HttpPost]
@@ -118,9 +135,36 @@ namespace Mvc_Data.Controllers
             {
 
                 _context.personlanguage.Add(pl);
-            _context.SaveChanges();
+                _context.SaveChanges();
             }
             return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public IActionResult RemoveLanguage(PersonLanguage pl)
+        {
+            
+            //_context.Entry(pl).State = EntityState.Deleted;
+            _context.personlanguage.Remove(pl);
+                _context.SaveChanges();
+            
+
+            return RedirectToAction("UpdatePeapole", new { Id = pl.Id });
+        }
+        [HttpPost]
+        public IActionResult UpdatePerson(Person upPerson)
+        {
+            
+            if (ModelState.IsValid)
+            {
+
+                _context.peapole.Update(upPerson);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("UpdatePeapole", new {Id = upPerson.Id});
+            }
         }
     }
 }

@@ -43,5 +43,27 @@ namespace Mvc_Data.Controllers
 
             return View("Countery", _context.countery.ToList());
         }
+        public IActionResult UpdateCountery(string CounteryName)
+        {
+            Countery l = (from x in _context.countery.ToList()
+                      where x.CounteryName == CounteryName
+                      select x).First();
+            return View(l);
+        }
+        [HttpPost]
+        public IActionResult UpdateCountery(Countery upCountery)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _context.countery.Update(upCountery);
+                _context.SaveChanges();
+                return RedirectToAction("Countery");
+            }
+            else
+            {
+                return RedirectToAction("UpdateCountery", new { CounteryName = upCountery.CounteryName });
+            }
+        }
     }
 }

@@ -1,0 +1,43 @@
+﻿@using Mvc_Data.Models
+@model ListViewModel
+
+@using (Html.BeginForm("UpdatePerson", "Home", FormMethod.Post))
+    {
+
+        <input type="hidden" name="Id" placeholder="Name" value="@Model.peapoleList[0].Id">
+        <input type="text" name="Name" placeholder="Name" value="@Model.peapoleList[0].Name">
+        <select name="CityID">
+            @foreach (var v in Model.cityList)
+            {
+            if (Model.peapoleList[0].CityID == v.CityID)
+            {
+                <option value="@v.CityID" selected="selected">@v.Name</option>
+            }
+            else
+            {
+                <option value="@v.CityID">@v.Name</option>
+            }
+            }
+                                     
+        </select>
+        <input type="text" name="Phone" placeholder="Phone" value="@Model.peapoleList[0].Phone">
+        
+
+            
+        
+        <input type="submit" value="Update" >
+    }
+@foreach (var v in Model.languageList)
+            {
+        @using (Html.BeginForm("RemoveLanguage", "Home", FormMethod.Post))
+        {
+            <label>@v.LanguageName</label>
+            <input type="hidden" name="LanguageID" value="@v.LanguageID"/>
+            <input type="hidden" name="Id" value="@Model.peapoleList[0].Id"/>
+            <input type="submit" value="Remove" >
+        }
+
+                
+              
+            } 
+    

@@ -1,5 +1,5 @@
 ﻿@using Mvc_Data.Models
-@model IEnumerable<City>
+@model ListViewModel
 
 @{
     ViewData["Title"] = "City";
@@ -22,19 +22,25 @@
 {
 
     <input type="text" name="Name" placeholder="Name">
-    <input type="text" name="CounteryName" placeholder="CounteryName">
+    <select name="CounteryName">
+            @foreach (var v in Model.counteryList)
+            {
+                <option value="@v.CounteryName">@v.CounteryName</option>
+            } 
+        </select>
         
       <input type="submit" value="Add">
 }
 
 <div class="peapoleTable">
-   @foreach (var v in Model)
+   @foreach (var v in Model.cityList)
 {
     
         <div class="row"> 
 	    <p class="col-sm-4">@v.Name</p> 
         <p class="col-sm-4">@v.CounteryName</p>         
         <p class="col-sm-4">iD: @v.CityID</p>
+        <p class="col-sm-4">@Html.ActionLink("Update","UpdateCity","City",new{CityID = v.CityID})</p>
 </div> 
                          
 } 

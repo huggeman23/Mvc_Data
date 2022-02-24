@@ -1,0 +1,26 @@
+﻿@using Mvc_Data.Models
+@model ListViewModel
+
+@using (Html.BeginForm("UpdateCity", "City", FormMethod.Post))
+    {
+
+        
+        <input type="text" name="Name" placeholder="Name" value="@Model.cityList[0].Name">
+        <input type="Hidden" name="CityID" placeholder="City" value="@Model.cityList[0].CityID">
+        <select name="CounteryName">
+            @foreach (var v in Model.counteryList)
+            {
+                if (Model.cityList[0].CounteryName == v.CounteryName)
+            {
+                <option value="@v.CounteryName" selected="selected">@v.CounteryName</option>
+            }
+            else
+            {
+                <option value="@v.CounteryName">@v.CounteryName</option>
+            }
+            } 
+        </select>
+        
+
+        <input type="submit" value="Update" >
+    }

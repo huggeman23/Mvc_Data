@@ -29,13 +29,17 @@ p{
 }
 </style>
 <body>
+    @if(User.IsInRole("Admin")){
     <div>@Html.ActionLink("City","City","City")</div>
     <div>@Html.ActionLink("Language","Language","Language")</div>
     <div>@Html.ActionLink("Countery","Countery","Countery")</div>
     <div>@Html.ActionLink("Person","Index","Home")</div>
+    }
+    <partial name="_LoginPartial" />
     <div>
         
         @RenderBody()
+        @RenderSection("Scripts", required:false)
     </div>
     <script>
 
@@ -68,6 +72,13 @@ $.get("Home/Partial", function(data) {
         document.getElementById("pep").innerHTML =result;
           
         }); 
+        function postPersonLanguage() {
+     alert($("input[name='Id']").val()+""+$("input[name='LanguageID']").val());
+        $.post("Home/RemoveLanguage", {Id: $("input[name='Id']").val(), LanguageID: $("input[name='LanguageID']").val(),}    
+       
+          
+        ); 
+       }
        }
     </script>
 </body>

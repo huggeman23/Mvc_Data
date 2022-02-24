@@ -1,0 +1,10 @@
+﻿@using Mvc_Data.Models
+@model Countery
+
+@using (Html.BeginForm("UpdateCountery", "Countery", FormMethod.Post))
+    {
+
+        <input type="text" name="CounteryName" placeholder="Countery" value="@Model.CounteryName">
+
+        <input type="submit" value="Update" >
+    }
